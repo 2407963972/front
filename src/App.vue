@@ -12,12 +12,17 @@
   :visible.sync="dialogVisible"
   width="30%"
   :before-close="handleClose">
-  <span>这是一段信息</span>
+  <div>添加学生信息</div>
   <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
   </span>
-  
+  <div><span>学号</span><input v-model="newStudent.number"/></div>
+  <div><span>姓名</span><input v-model="newStudent.name"/></div>
+  <div><span>年龄</span><input v-model.number="newStudent.age"/></div>
+  <div><span>语文</span><input v-model.number="newStudent.chi"/></div>
+  <div><span>数学</span><input v-model.number="newStudent.math"/></div>
+  <div><span>英语</span><input v-model.number="newStudent.eng"/></div>
 </el-dialog>
         </caption>
         <thead>
@@ -56,8 +61,15 @@ export default {
   data() {
     return {
       students: [],
-
       dialogVisible: false,
+      newStudent: {
+        number: "",
+        name: "",
+        age: "",
+        chi: "",
+        math: "",
+        eng: "",
+      },
     };
   },
   methods: {

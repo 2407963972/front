@@ -1,28 +1,96 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="col-md-8 offset-md-2">
+      <table class="table caption-top table-hover">
+        <caption class="text-center">
+          <h1>学生管理系统</h1>
+          <el-button type="primary" @click="getStudents">获取学生信息</el-button>
+          <el-button type="text" @click="dialogVisible = true">点击打开 Dialog</el-button>
+
+<el-dialog
+  title="提示"
+  :visible.sync="dialogVisible"
+  width="30%"
+  :before-close="handleClose">
+  <span>这是一段信息</span>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="dialogVisible = false">取 消</el-button>
+    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+  </span>
+</el-dialog>
+
+<script>
+  export default {
+    data() {
+      return {
+        dialogVisible: false
+      };
+    },
+    methods: {
+      handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(_ => {
+            done();
+          })
+          .catch(_ => {});
+      }
+    }
+  };
+</script>
+        </caption>
+        <thead>
+          <tr>
+            <th scope="col">学号</th>
+            <th scope="col">姓名</th>
+            <th scope="col">年龄</th>
+            <th scope="col">语文</th>
+            <th scope="col">数学</th>
+            <th scope="col">英语</th>
+            <th scope="col">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <Student
+            v-for="student in students"
+            :key="student.id"
+            :student="student"
+          ></Student>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import axios from "axios";
+import Student from "./components/Student.vue";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    Student,
+  },
+  data() {
+    return {
+      students: [],
+    };
+  },
+  methods: {
+    getStudents() {
+      axios({
+        url: "http://localhost:8080/students",
+        method: "GET",
+      })
+        .then((res) => {
+          console.log(res);
+          this.students = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+  },
+};
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 </style>

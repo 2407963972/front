@@ -17,26 +17,8 @@
     <el-button @click="dialogVisible = false">取 消</el-button>
     <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
   </span>
+  
 </el-dialog>
-
-<script>
-  export default {
-    data() {
-      return {
-        dialogVisible: false
-      };
-    },
-    methods: {
-      handleClose(done) {
-        this.$confirm('确认关闭？')
-          .then(_ => {
-            done();
-          })
-          .catch(_ => {});
-      }
-    }
-  };
-</script>
         </caption>
         <thead>
           <tr>
@@ -61,6 +43,8 @@
   </div>
 </template>
 
+
+
 <script>
 import axios from "axios";
 import Student from "./components/Student.vue";
@@ -72,6 +56,8 @@ export default {
   data() {
     return {
       students: [],
+
+      dialogVisible: false,
     };
   },
   methods: {
@@ -88,6 +74,13 @@ export default {
           console.log(err);
         });
     },
+    handleClose(done) {
+        this.$confirm('确认关闭？')
+          .then(() => {
+            done();
+          })
+          .catch(() => {});
+      }
   },
 };
 </script>

@@ -15,7 +15,7 @@
   <div>添加学生信息</div>
   <span slot="footer" class="dialog-footer">
     <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+    <el-button type="primary" @click="dialogVisible = false">添加</el-button>
   </span>
   <div><span>学号</span><input v-model="newStudent.number"/></div>
   <div><span>姓名</span><input v-model="newStudent.name"/></div>

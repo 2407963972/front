@@ -9,7 +9,11 @@
     <td v-show="!is_edit">{{ student.eng }}</td>
     <td v-show="!is_edit">
       <el-button type="primary" @click="modify">修改</el-button>
-      <el-button type="danger" @click="deleteStudent">删除</el-button>
+    </td>
+
+    <td v-show="!is_edit">
+    <el-button type="danger" @click="deleteStudent">删除</el-button>
+
     </td>
 
     <td v-show="is_edit"><input class="w-50" type="text" v-model="student.id"/></td>
@@ -20,6 +24,9 @@
     <td v-show="is_edit"><input class="w-50" type="text" v-model.number="student.eng"/></td>
     <td v-show="is_edit">
       <el-button type="primary" @click="save">保存</el-button>
+    </td>
+
+    <td v-show="is_edit">
       <el-button type="danger">删除</el-button>
     </td>
 
@@ -54,6 +61,7 @@ export default {
                 method: "POST",
                 data: this.student,
             })
+            location.reload();
         },
     },
 };

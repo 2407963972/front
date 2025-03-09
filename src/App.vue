@@ -52,7 +52,7 @@
         </thead>
         <tbody>
           <Student
-            v-for="student in students"
+            v-for="student in students_of_page"
             :key="student.id"
             :student="student"
           ></Student>
@@ -60,8 +60,8 @@
       </table>
 <div class="text-center"> 
       <el-button-group>
-        <el-button type="primary" icon="el-icon-arrow-left">上一页</el-button>
-        <el-button type="primary"
+        <el-button type="primary" icon="el-icon-arrow-left" @click="prev_page">上一页</el-button>
+        <el-button type="primary" @click="next_page"
           >下一页<i class="el-icon-arrow-right el-icon--right"></i
         ></el-button>
       </el-button-group>
@@ -82,6 +82,7 @@ export default {
   },
   data() {
     return {
+      page: 1,
       students: [],
       dialogVisible: false,
       newStudent: {
@@ -129,6 +130,17 @@ export default {
         .catch((err) => {
           console.log(err);
         });
+    },
+    next_page() {
+      this.page++;
+    },
+    prev_page() {
+      this.page--;
+    },
+  },
+  computed: {
+    students_of_page() {
+      return this.students.slice(this.page * 5 - 5, this.page * 5);
     },
   },
 };

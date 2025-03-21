@@ -157,8 +157,8 @@ export default {
     return {
       dialogVisible: false,
       templateDialogVisible: false,
-      showResume: false,
-      selectedTemplate: "classic", // 默认模板
+      showResume: true, // 默认显示简历
+      selectedTemplate: "creative", // 默认使用创意模板
       templates: [
         {
           id: "classic",
@@ -181,15 +181,46 @@ export default {
       ],
       resumeData: {
         basicInfo: {
-          name: "",
-          position: "",
-          email: "",
-          phone: "",
-          summary: ""
+          name: "张三",
+          position: "前端开发工程师",
+          email: "zhangsan@email.com",
+          phone: "13800138000",
+          summary: "拥有5年前端开发经验，精通HTML、CSS、JavaScript，熟悉Vue、React等前端框架，对用户体验和界面设计有深入了解。"
         },
-        education: [],
-        workExperience: [],
-        skills: []
+        education: [
+          {
+            school: "北京大学",
+            degree: "本科",
+            major: "计算机科学与技术",
+            timeRange: [new Date(2014, 8, 1), new Date(2018, 6, 1)]
+          }
+        ],
+        workExperience: [
+          {
+            company: "XX科技有限公司",
+            position: "前端开发工程师",
+            description: "负责公司核心产品的前端开发工作，实现了多个关键功能模块；优化了网站性能，提升了用户体验；参与了多个项目的技术选型和架构设计。",
+            timeRange: [new Date(2018, 7, 1), new Date(2023, 6, 1)]
+          }
+        ],
+        skills: [
+          {
+            name: "JavaScript",
+            level: 5
+          },
+          {
+            name: "Vue.js",
+            level: 4
+          },
+          {
+            name: "HTML/CSS",
+            level: 5
+          },
+          {
+            name: "React",
+            level: 3
+          }
+        ]
       }
     };
   },
@@ -265,7 +296,7 @@ export default {
         const parsed = JSON.parse(savedData);
         if (parsed.resumeData) {
           this.resumeData = parsed.resumeData;
-          this.selectedTemplate = parsed.selectedTemplate || "classic";
+          this.selectedTemplate = parsed.selectedTemplate || "creative";
         } else {
           // 兼容旧格式数据
           this.resumeData = parsed;
@@ -274,6 +305,8 @@ export default {
         console.error("Failed to parse saved resume data", e);
       }
     }
+    // 无论是否从本地存储加载，都显示简历
+    this.showResume = true;
   }
 };
 </script>

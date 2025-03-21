@@ -175,7 +175,7 @@
         <div class="creative-contact">
           <div v-if="resumeData.basicInfo.email" class="creative-contact-item">
             <i class="el-icon-message"></i>
-            <span>{{ resumeData.basicInfo.email }}</span>
+            <span class="email-text">{{ resumeData.basicInfo.email }}</span>
           </div>
           <div v-if="resumeData.basicInfo.phone" class="creative-contact-item">
             <i class="el-icon-phone"></i>
@@ -578,14 +578,14 @@ export default {
 }
 
 .template-creative .creative-sidebar {
-  width: 30%;
+  width: 35%;
   background-color: #2c3e50;
   color: #fff;
   padding: 30px 20px;
 }
 
 .template-creative .creative-main {
-  width: 70%;
+  width: 65%;
   padding: 30px;
 }
 
@@ -630,18 +630,35 @@ export default {
 
 .template-creative .creative-contact {
   margin-bottom: 30px;
+  padding: 0 5px;
 }
 
 .template-creative .creative-contact-item {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   margin-bottom: 10px;
+  word-break: break-all;
 }
 
 .template-creative .creative-contact-item i {
   width: 25px;
+  min-width: 25px;
   color: #3498db;
   margin-right: 10px;
+  margin-top: 3px;
+}
+
+.template-creative .creative-contact-item span {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  font-size: 0.85em;
+  line-height: 1.4;
+  max-width: calc(100% - 35px);
+}
+
+.template-creative .email-text {
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .template-creative .creative-skills {

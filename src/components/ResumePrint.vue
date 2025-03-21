@@ -251,7 +251,7 @@
     </div>
 
     <!-- 打印按钮 -->
-    <div class="print-actions">
+    <div class="print-actions no-print">
       <el-button type="primary" @click="printResume">打印简历</el-button>
     </div>
   </div>
@@ -794,18 +794,60 @@ export default {
 
 /* 打印样式 */
 @media print {
-  .print-actions {
-    display: none;
+  .print-actions,
+  .no-print {
+    display: none !important;
   }
   
   body {
     background-color: #fff;
+    margin: 0;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
   
   .resume-container {
     box-shadow: none;
     margin: 0;
     padding: 0;
+    page-break-inside: avoid;
+    page-break-after: auto;
+    max-width: 100%;
+  }
+  
+  /* 针对不同模板的打印优化 */
+  .template-creative .creative-sidebar {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    background-color: #2c3e50 !important;
+    color: #fff !important;
+  }
+  
+  .template-creative .creative-timeline::before,
+  .template-creative .creative-timeline-dot,
+  .template-modern .modern-separator,
+  .template-modern .modern-section-title::after,
+  .template-creative .creative-section-title::after,
+  .template-creative .creative-skill-fill,
+  .template-classic .skill-bar {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  
+  .template-modern .modern-header {
+    break-after: avoid;
+  }
+  
+  /* 确保颜色在打印中保持 */
+  .template-creative .creative-section-header i,
+  .template-creative .creative-contact-item i,
+  .template-modern .contact-item i,
+  .template-modern .modern-skill-dot.active,
+  .template-classic .resume-contact i {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    color: #3498db !important;
   }
 }
 </style> 

@@ -164,19 +164,19 @@ export default {
           id: "classic",
           name: "经典简历",
           description: "简洁大方的经典风格",
-          preview: "https://via.placeholder.com/300x400?text=经典模板"
-        },
-        {
-          id: "modern",
-          name: "现代简历",
-          description: "时尚现代的设计风格",
-          preview: "https://via.placeholder.com/300x400?text=现代模板"
+          preview: require('./assets/images/classic-template.jpg')
         },
         {
           id: "creative",
           name: "创意简历",
           description: "富有创意的个性化简历",
-          preview: "https://via.placeholder.com/300x400?text=创意模板"
+          preview: require('./assets/images/creative-template.jpg')
+        },
+        {
+          id: "modern",
+          name: "现代简历",
+          description: "时尚现代的设计风格",
+          preview: require('./assets/images/modern-template.jpg')
         }
       ],
       resumeData: {

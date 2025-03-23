@@ -152,7 +152,7 @@
         v-if="templateDialogVisible"
         title="选择简历模板"
         :visible.sync="templateDialogVisible"
-        width="70%"
+        width="80%"
         :before-close="handleClose"
         :append-to-body="true"
         custom-class="template-dialog"
@@ -188,7 +188,6 @@
           </div>
         </div>
         <span slot="footer" class="dialog-footer">
-          <el-button @click="closeTemplateDialog">取消</el-button>
           <el-button type="primary" @click="applyTemplate">应用模板</el-button>
         </span>
       </el-dialog>
@@ -832,6 +831,9 @@ export default {
   cursor: pointer;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
   background: white;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .template-card:hover {
@@ -850,15 +852,28 @@ export default {
   height: 0;
   padding-bottom: 140%;
   overflow: hidden;
+  background-color: #f8f9fa;
+  flex-grow: 1;
 }
 
 .template-image {
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  padding: 10px;
+}
+
+.dark-mode .template-preview {
+  background-color: #333;
+}
+
+.dark-mode .template-image {
+  padding: 10px;
 }
 
 .template-overlay {
@@ -867,21 +882,22 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0);
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .template-card.active .template-overlay {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .select-button {
   opacity: 0;
   transform: scale(0.5);
   transition: all 0.3s ease;
+  z-index: 10;
 }
 
 .template-card.active .select-button {
@@ -892,6 +908,7 @@ export default {
 .template-info {
   padding: 15px;
   text-align: center;
+  flex-shrink: 0;
 }
 
 .template-info h3 {
@@ -998,6 +1015,11 @@ export default {
 
 .dark-mode .preview-header {
   border-bottom: 1px solid #444;
+  background-color: transparent;
+  padding: 15px 20px;
+  margin: 0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
 }
 
 .dark-mode .el-dialog {
@@ -1064,6 +1086,8 @@ export default {
 
 .template-dialog .el-dialog__body {
   padding: 25px;
+  overflow-y: auto;
+  max-height: 70vh;
 }
 
 .template-dialog .el-dialog__footer {
@@ -1141,5 +1165,154 @@ body:not(.el-popup-parent--hidden) .v-modal {
 /* 确保body没有多余的overflow:hidden */
 body:not(.el-popup-parent--hidden) {
   overflow: auto !important;
+}
+
+/* 调整模板对话框的大小和布局 */
+.template-dialog {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.template-dialog .el-dialog__body {
+  padding: 25px;
+  overflow-y: auto;
+  max-height: 70vh;
+}
+
+/* 确保对话框内的模板网格能够适当显示 */
+@media (min-width: 1200px) {
+  .template-dialog .template-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .template-preview {
+    padding-bottom: 150%; /* 更高的预览区域 */
+  }
+}
+
+@media (max-width: 1199px) and (min-width: 768px) {
+  .template-dialog .template-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .template-preview {
+    padding-bottom: 160%;
+  }
+}
+
+@media (max-width: 767px) {
+  .template-dialog .template-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .template-preview {
+    padding-bottom: 170%;
+  }
+}
+
+/* 在黑夜模式下调整经典模板和现代模板的背景和文本颜色 */
+.dark-mode .template-classic,
+.dark-mode .template-modern {
+  background-color: #fff !important;
+  color: #333 !important;
+}
+
+/* 在黑夜模式下修复预览区域的背景色 */
+.dark-mode .resume-preview {
+  background-color: #2c2c2c;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.dark-mode .resume-preview .resume-container {
+  padding: 30px;
+  margin-top: 0;
+  background-color: #fff !important;
+  color: #333 !important;
+}
+
+/* 保持经典模板和现代模板的某些元素颜色不变 */
+.dark-mode .template-classic .resume-name,
+.dark-mode .template-classic .section-title,
+.dark-mode .template-classic .item-header h3,
+.dark-mode .template-modern .modern-name-title h1,
+.dark-mode .template-modern .modern-section-title,
+.dark-mode .template-modern .modern-experience-title h4 {
+  color: #2c3e50 !important;
+}
+
+.dark-mode .template-classic .resume-position,
+.dark-mode .template-classic .item-header h4,
+.dark-mode .template-classic .time-range,
+.dark-mode .template-modern .modern-name-title h2,
+.dark-mode .template-modern .modern-experience-title h5,
+.dark-mode .template-modern .modern-experience-date {
+  color: #7f8c8d !important;
+}
+
+/* 修复黑夜模式下的图标和元素颜色 */
+.dark-mode .template-classic .resume-contact i,
+.dark-mode .template-modern .contact-item i {
+  color: #3498db !important;
+}
+
+.dark-mode .template-classic .skill-bar,
+.dark-mode .template-modern .modern-separator,
+.dark-mode .template-modern .modern-section-title::after,
+.dark-mode .template-modern .modern-skill-dot.active {
+  background-color: #3498db !important;
+}
+
+/* 保持创意模板的颜色方案 */
+.dark-mode .template-creative .creative-sidebar {
+  background-color: #2c3e50 !important;
+  color: #fff !important;
+}
+
+.dark-mode .template-creative .creative-main {
+  background-color: #fff !important;
+  color: #333 !important;
+}
+
+.dark-mode .template-creative .creative-section-header i,
+.dark-mode .template-creative .creative-contact-item i {
+  color: #3498db !important;
+}
+
+.dark-mode .template-creative .creative-timeline-dot,
+.dark-mode .template-creative .creative-section-title::after,
+.dark-mode .template-creative .creative-skill-fill {
+  background-color: #3498db !important;
+}
+
+/* 修复黑夜模式下预览头部区域 */
+.dark-mode .preview-header {
+  border-bottom: 1px solid #444;
+  background-color: transparent;
+  padding: 15px 20px;
+  margin: 0;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+.dark-mode .preview-title {
+  color: #3498db !important;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+/* 修复黑夜模式下打印按钮样式 */
+.dark-mode .preview-header .el-button {
+  color: #3498db;
+  border-color: #3498db;
+  background-color: transparent;
+}
+
+.dark-mode .preview-header .el-button:hover {
+  color: #fff;
+  background-color: #3498db;
+  border-color: #3498db;
 }
 </style>

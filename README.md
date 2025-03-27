@@ -63,33 +63,27 @@ src/
 - 现代浏览器（Chrome, Firefox, Safari, Edge等最新版本）
 
 ### 安装步骤
+**下载**
 
-```bash
-# 克隆项目仓库
-git clone [repository-url]
-cd [project-folder]
+下载源代码后，把解压的文件拖入vscode
 
-# 安装依赖
-npm install
-# 或使用yarn
-yarn install
+**安装依赖**
 
-# 本地开发服务
-npm run serve
-# 或使用yarn
-yarn serve
+在终端输入 **npm install**
 
-# 构建生产版本
-npm run build
-# 或使用yarn
-yarn build
+**本地开发服务**
 
-# 运行单元测试（如有）
-npm run test:unit
-```
+在终端输入 **npm run serve**
 
-### 环境变量配置
-项目使用`.env`文件管理环境变量，可根据需要创建`.env.development`和`.env.production`文件进行不同环境的配置。
+
+**等待服务拉起后，进入本地的8080端口即可访问（网址如下）**:
+
+  - Local:   http://localhost:8080/
+
+  - Network: http://10.18.132.167:8080/
+
+
+**当然，也可以通过我们的线上演示网址直接访问。我们部署网站需要一定的审核时间。正式上线时间可能会晚一些。**
 
 ## 设计思路与实现
 

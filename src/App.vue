@@ -1,6 +1,22 @@
 <template>
   <div id="app" class="app-container" :class="{ 'dark-mode': darkMode }">
-    <div class="background-effect"></div>
+    <!-- 添加开屏动画 -->
+    <div class="splash-screen" v-if="showSplash">
+      <div class="splash-icon-container">
+        <div class="splash-icon">
+          <i class="el-icon-document"></i>
+        </div>
+        <div class="splash-glow"></div>
+      </div>
+      <div class="splash-title">简历生成器</div>
+    </div>
+
+    <div class="background-effect">
+      <!-- 背景中保留的图标 -->
+      <div class="background-icon" v-if="!showSplash">
+        <div class="icon-glow"></div>
+      </div>
+    </div>
     
     <!-- 导航栏 -->
     <nav class="modern-navbar">
@@ -228,6 +244,7 @@ export default {
       showResume: true, // 默认显示简历
       selectedTemplate: "creative", // 默认使用创意模板
       darkMode: false, // 默认使用浅色模式
+      showSplash: true, // 控制开屏动画显示
       templates: [
         {
           id: "classic",
@@ -432,11 +449,152 @@ export default {
     
     // 无论是否从本地存储加载，都显示简历
     this.showResume = true;
+
+    // 控制开屏动画
+    setTimeout(() => {
+      // 先添加发光效果
+      const splashIcon = document.querySelector('.splash-icon');
+      if (splashIcon) {
+        splashIcon.classList.add('glow');
+      }
+      
+      // 1秒后开始翻转动画
+      setTimeout(() => {
+        const splashIconContainer = document.querySelector('.splash-icon-container');
+        if (splashIconContainer) {
+          splashIconContainer.classList.add('flip');
+          
+          // 翻转后1秒开始淡出动画
+          setTimeout(() => {
+            splashIconContainer.classList.add('fade');
+          }, 1000);
+        }
+      }, 1000);
+      
+      // 4秒后隐藏开屏动画，此时背景图标会显示
+      setTimeout(() => {
+        this.showSplash = false;
+      }, 4000);
+    }, 500);
   }
 };
 </script>
 
 <style>
+/* 开屏动画样式 */
+.splash-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #3498db, #9b59b6);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeOutSplash 0.5s ease-out 3.5s forwards;
+}
+
+.splash-icon-container {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.8s ease-out, opacity 1s ease-out;
+}
+
+.splash-icon-container.flip {
+  transform: translateY(-50px) scaleX(-1);
+}
+
+.splash-icon-container.fade {
+  transform: translateY(0px) scaleX(-1) scale(5);
+  opacity: 0.15;
+  transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1), opacity 1.5s ease-out;
+}
+
+.splash-icon {
+  width: 100px;
+  height: 100px;
+  background-color: white;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  z-index: 2;
+  transition: all 0.8s ease-out;
+}
+
+.splash-icon.glow {
+  box-shadow: 0 0 30px rgba(52, 152, 219, 0.8), 0 0 50px rgba(155, 89, 182, 0.5);
+}
+
+.splash-icon i {
+  font-size: 60px;
+  background: linear-gradient(45deg, #3498db, #9b59b6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.splash-glow {
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: 25px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  z-index: 1;
+  animation: glowPulse 1.5s ease-in-out infinite alternate;
+}
+
+.splash-title {
+  margin-top: 30px;
+  font-size: 28px;
+  font-weight: 600;
+  color: white;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  animation: fadeOutTitle 0.5s ease-out 2.5s forwards;
+}
+
+@keyframes glowPulse {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+    border: 2px solid rgba(255, 255, 255, 0.5);
+  }
+  100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+  }
+}
+
+@keyframes fadeOutSplash {
+  from {
+    opacity: 1;
+    visibility: visible;
+  }
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+@keyframes fadeOutTitle {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
 /* 页面整体样式 */
 .app-container {
   min-height: 100vh;
@@ -523,7 +681,7 @@ export default {
   width: 100%;
   height: 100%;
   background: linear-gradient(135deg, rgba(240, 248, 255, 0.8) 0%, rgba(245, 243, 255, 0.8) 100%);
-  z-index: -1;
+  z-index: -2;
 }
 
 .background-effect::before {
@@ -536,6 +694,7 @@ export default {
   background: radial-gradient(circle, rgba(52, 152, 219, 0.1) 0%, rgba(52, 152, 219, 0) 70%);
   border-radius: 50%;
   animation: float 20s infinite alternate ease-in-out;
+  z-index: -1;
 }
 
 .background-effect::after {
@@ -548,6 +707,73 @@ export default {
   background: radial-gradient(circle, rgba(155, 89, 182, 0.1) 0%, rgba(155, 89, 182, 0) 70%);
   border-radius: 50%;
   animation: float 15s infinite alternate-reverse ease-in-out;
+  z-index: -1;
+}
+
+/* 背景中保留的图标 */
+.background-icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' width='512' height='512'%3E%3Cdefs%3E%3ClinearGradient id='grad' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:rgba(52, 152, 219, 0.4);stop-opacity:1' /%3E%3Cstop offset='100%25' style='stop-color:rgba(155, 89, 182, 0.4);stop-opacity:1' /%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath fill='url(%23grad)' d='M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 80%;
+  opacity: 0;
+  animation: fadeInBackground 1.5s ease-out forwards;
+  filter: drop-shadow(0 0 30px rgba(52, 152, 219, 0.3));
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* 图标光晕效果 */
+.icon-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(52, 152, 219, 0.08) 0%, rgba(155, 89, 182, 0.05) 60%, rgba(0, 0, 0, 0) 70%);
+  z-index: -1;
+  animation: pulseGlow 4s ease-in-out infinite alternate;
+}
+
+@keyframes pulseGlow {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.3);
+    opacity: 0.8;
+  }
+}
+
+@keyframes fadeInBackground {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 0.65;
+    transform: scale(1);
+  }
+}
+
+/* 响应式调整背景图标 */
+@media (max-width: 768px) {
+  .background-icon {
+    background-size: 120%;
+  }
+  
+  .icon-glow {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 /* 简历预览区域 */

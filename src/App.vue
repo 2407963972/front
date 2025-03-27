@@ -16,6 +16,24 @@
       <div class="background-icon" v-if="!showSplash">
         <div class="icon-glow"></div>
       </div>
+      
+      <!-- 左侧装饰线 -->
+      <div class="decorative-lines left-lines" v-if="!showSplash">
+        <div class="line line-1"></div>
+        <div class="line line-2"></div>
+        <div class="line line-3"></div>
+        <div class="line line-4"></div>
+        <div class="line line-5"></div>
+      </div>
+      
+      <!-- 右侧装饰线 -->
+      <div class="decorative-lines right-lines" v-if="!showSplash">
+        <div class="line line-1"></div>
+        <div class="line line-2"></div>
+        <div class="line line-3"></div>
+        <div class="line line-4"></div>
+        <div class="line line-5"></div>
+      </div>
     </div>
     
     <!-- 导航栏 -->
@@ -726,6 +744,153 @@ export default {
   filter: drop-shadow(0 0 30px rgba(52, 152, 219, 0.3));
   z-index: -1;
   pointer-events: none;
+}
+
+/* 装饰线样式 */
+.decorative-lines {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 90%;
+  top: 5%;
+  opacity: 0;
+  animation: fadeInLines 0.5s ease-out forwards;
+  z-index: 0;
+}
+
+.left-lines {
+  left: 20px;
+  animation-delay: 0.2s;
+}
+
+.right-lines {
+  right: 20px;
+  animation-delay: 0.4s;
+}
+
+.decorative-lines .line {
+  background: linear-gradient(90deg, rgba(52, 152, 219, 0.8), rgba(155, 89, 182, 0.8));
+  height: 4px;
+  border-radius: 2px;
+  margin: 25px 0;
+  box-shadow: 0 0 12px rgba(52, 152, 219, 0.6);
+  transform-origin: left center;
+}
+
+.right-lines .line {
+  background: linear-gradient(90deg, rgba(155, 89, 182, 0.8), rgba(52, 152, 219, 0.8));
+  transform-origin: right center;
+}
+
+/* 各条线的长度和动画延迟不同 */
+.left-lines .line-1 {
+  width: 120px;
+  animation: slideLeftLine 1.2s ease-out forwards;
+  animation-delay: 0.2s;
+}
+
+.left-lines .line-2 {
+  width: 90px;
+  animation: slideLeftLine 1s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+.left-lines .line-3 {
+  width: 150px;
+  animation: slideLeftLine 1.4s ease-out forwards;
+  animation-delay: 0.1s;
+}
+
+.left-lines .line-4 {
+  width: 100px;
+  animation: slideLeftLine 1.1s ease-out forwards;
+  animation-delay: 0.4s;
+}
+
+.left-lines .line-5 {
+  width: 110px;
+  animation: slideLeftLine 1.3s ease-out forwards;
+  animation-delay: 0.25s;
+}
+
+.right-lines .line-1 {
+  width: 120px;
+  animation: slideRightLine 1.2s ease-out forwards;
+  animation-delay: 0.2s;
+}
+
+.right-lines .line-2 {
+  width: 90px;
+  animation: slideRightLine 1s ease-out forwards;
+  animation-delay: 0.3s;
+}
+
+.right-lines .line-3 {
+  width: 150px;
+  animation: slideRightLine 1.4s ease-out forwards;
+  animation-delay: 0.1s;
+}
+
+.right-lines .line-4 {
+  width: 100px;
+  animation: slideRightLine 1.1s ease-out forwards;
+  animation-delay: 0.4s;
+}
+
+.right-lines .line-5 {
+  width: 110px;
+  animation: slideRightLine 1.3s ease-out forwards;
+  animation-delay: 0.25s;
+}
+
+@keyframes fadeInLines {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideLeftLine {
+  0% {
+    transform: translateX(150px) scaleX(1.5);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0) scaleX(1);
+    opacity: 0.9;
+  }
+}
+
+@keyframes slideRightLine {
+  0% {
+    transform: translateX(-150px) scaleX(1.5);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(0) scaleX(1);
+    opacity: 0.9;
+  }
+}
+
+/* 媒体查询调整线条长度 */
+@media (max-width: 768px) {
+  .left-lines .line, .right-lines .line {
+    width: 60px !important;
+  }
+}
+
+/* 黑暗模式下的线条样式 */
+.dark-mode .decorative-lines .line {
+  box-shadow: 0 0 8px rgba(52, 152, 219, 0.6);
 }
 
 /* 图标光晕效果 */

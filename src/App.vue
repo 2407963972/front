@@ -72,6 +72,184 @@
         </div>
       </div>
 
+      <!-- 简历预览 -->
+      <div v-if="showResume" class="resume-preview mt-4">
+        <div class="preview-header">
+          <span class="preview-title">简历预览</span>
+          <el-button size="small" type="primary" plain @click="printResume">
+            <i class="el-icon-printer"></i> 打印
+          </el-button>
+        </div>
+        <ResumePrint :resumeData="resumeData" :template="selectedTemplate" />
+      </div>
+
+      <!-- 简历评分卡片 -->
+      <div v-if="showResume" class="score-card mt-4 no-print">
+        <div class="score-header">
+          <h3 class="score-title">简历评分</h3>
+          <el-tooltip content="根据简历完整度和内容质量自动评分" placement="top">
+            <i class="el-icon-info"></i>
+          </el-tooltip>
+        </div>
+        <div class="score-content">
+          <div class="score-main">
+            <div class="score-circle">
+              <el-progress 
+                type="circle" 
+                :percentage="resumeScore.total"
+                :color="getScoreColor(resumeScore.total)"
+                :stroke-width="10"
+                :width="120">
+                <template #default="{ percentage }">
+                  <div class="score-text">
+                    <span class="score-number">{{ percentage }}</span>
+                    <span class="score-label">分</span>
+                  </div>
+                </template>
+              </el-progress>
+            </div>
+            <div class="score-details">
+              <div class="detail-item">
+                <span class="detail-label">基本信息</span>
+                <el-progress 
+                  :percentage="resumeScore.details.basicInfo * 4"
+                  :color="getScoreColor(resumeScore.details.basicInfo * 4)"
+                  :show-text="false"
+                  :stroke-width="8"
+                  :width="120">
+                </el-progress>
+                <span class="detail-score">{{ resumeScore.details.basicInfo }}/25</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">教育经历</span>
+                <el-progress 
+                  :percentage="resumeScore.details.education * 4"
+                  :color="getScoreColor(resumeScore.details.education * 4)"
+                  :show-text="false"
+                  :stroke-width="8"
+                  :width="120">
+                </el-progress>
+                <span class="detail-score">{{ resumeScore.details.education }}/25</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">工作经历</span>
+                <el-progress 
+                  :percentage="resumeScore.details.workExperience * 4"
+                  :color="getScoreColor(resumeScore.details.workExperience * 4)"
+                  :show-text="false"
+                  :stroke-width="8"
+                  :width="120">
+                </el-progress>
+                <span class="detail-score">{{ resumeScore.details.workExperience }}/25</span>
+              </div>
+              <div class="detail-item">
+                <span class="detail-label">技能</span>
+                <el-progress 
+                  :percentage="resumeScore.details.skills * 4"
+                  :color="getScoreColor(resumeScore.details.skills * 4)"
+                  :show-text="false"
+                  :stroke-width="8"
+                  :width="120">
+                </el-progress>
+                <span class="detail-score">{{ resumeScore.details.skills }}/25</span>
+              </div>
+            </div>
+          </div>
+          <div class="analysis-section">
+            <div class="industry-analysis">
+              <h4>行业竞争力分析</h4>
+              <div class="analysis-content">
+                <div v-for="(item, index) in industryAnalysisData" :key="index" class="analysis-item">
+                  <div class="analysis-label">{{ item.name }}</div>
+                  <el-progress 
+                    :percentage="item.value"
+                    :color="getScoreColor(item.value)"
+                    :stroke-width="10"
+                    :show-text="true">
+                  </el-progress>
+                </div>
+              </div>
+            </div>
+            <div class="career-path">
+              <h4>职业发展路径</h4>
+              <div class="career-path-content">
+                <div class="career-steps">
+                  <div v-for="(item, index) in careerPathData" :key="index" class="career-step">
+                    <div class="step-dot" :class="{ active: item.value <= careerPathData[getCurrentCareerLevel()].value }"></div>
+                    <div class="step-label">{{ item.name }}</div>
+                    <div class="step-value">{{ item.value }}%</div>
+                  </div>
+                  <div class="career-line"></div>
+                </div>
+                <div class="current-position">
+                  当前发展阶段：{{ careerPathData[getCurrentCareerLevel()].name }}
+                  <div class="position-progress">
+                    <el-progress 
+                      :percentage="careerPathData[getCurrentCareerLevel()].value"
+                      :color="'#3498db'"
+                      :stroke-width="8">
+                    </el-progress>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-if="resumeScore.suggestions.length > 0" class="score-suggestions">
+            <h4>优化建议</h4>
+            <ul>
+              <li v-for="(suggestion, index) in resumeScore.suggestions" :key="index">
+                <i class="el-icon-warning-outline"></i>
+                {{ suggestion }}
+              </li>
+            </ul>
+          </div>
+          <div class="score-criteria">
+            <h4>评分标准说明</h4>
+            <div class="criteria-grid">
+              <div class="criteria-section">
+                <h5>基本信息 (25分)</h5>
+                <ul>
+                  <li>姓名 (5分)</li>
+                  <li>职位 (5分)</li>
+                  <li>邮箱 (5分)</li>
+                  <li>电话 (5分)</li>
+                  <li>个人简介 (5分，需50字以上)</li>
+                </ul>
+              </div>
+              <div class="criteria-section">
+                <h5>教育经历 (25分)</h5>
+                <ul>
+                  <li>学校名称 (5分)</li>
+                  <li>学位 (5分)</li>
+                  <li>专业 (5分)</li>
+                  <li>起止时间 (5分)</li>
+                  <li>多个教育经历可累计</li>
+                </ul>
+              </div>
+              <div class="criteria-section">
+                <h5>工作经历 (25分)</h5>
+                <ul>
+                  <li>公司名称 (5分)</li>
+                  <li>职位名称 (5分)</li>
+                  <li>工作描述 (5分，需50字以上)</li>
+                  <li>起止时间 (5分)</li>
+                  <li>多个工作经历可累计</li>
+                </ul>
+              </div>
+              <div class="criteria-section">
+                <h5>技能评分 (25分)</h5>
+                <ul>
+                  <li>技能名称 (5分)</li>
+                  <li>熟练度3星以上 (5分)</li>
+                  <li>多个技能可累计</li>
+                  <li>根据职位推荐必要技能</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <el-dialog
         v-if="dialogVisible"
         title="编辑个人信息"
@@ -225,17 +403,6 @@
           <el-button type="primary" @click="applyTemplate">应用模板</el-button>
         </span>
       </el-dialog>
-
-      <!-- 简历预览 -->
-      <div v-if="showResume" class="resume-preview mt-4">
-        <div class="preview-header">
-          <span class="preview-title">简历预览</span>
-          <el-button size="small" type="primary" plain @click="printResume">
-            <i class="el-icon-printer"></i> 打印
-          </el-button>
-        </div>
-        <ResumePrint :resumeData="resumeData" :template="selectedTemplate" />
-      </div>
     </div>
     
     <!-- 页脚 -->
@@ -263,6 +430,16 @@ export default {
       selectedTemplate: "creative", // 默认使用创意模板
       darkMode: false, // 默认使用浅色模式
       showSplash: true, // 控制开屏动画显示
+      resumeScore: {
+        total: 0,
+        details: {
+          basicInfo: 0,
+          education: 0,
+          workExperience: 0,
+          skills: 0
+        },
+        suggestions: []
+      },
       templates: [
         {
           id: "classic",
@@ -324,8 +501,21 @@ export default {
             name: "React",
             level: 3
           }
-        ]
-      }
+        ],
+      },
+      industryAnalysisData: [
+        { name: '学历水平', value: 70 },
+        { name: '工作经验', value: 80 },
+        { name: '技能储备', value: 90 },
+        { name: '专业相关度', value: 70 },
+        { name: '职位匹配度', value: 75 }
+      ],
+      careerPathData: [
+        { name: '初级', value: 20 },
+        { name: '中级', value: 50 },
+        { name: '高级', value: 80 },
+        { name: '专家', value: 100 }
+      ]
     };
   },
   methods: {
@@ -344,6 +534,140 @@ export default {
         })
         .catch(() => {});
     },
+    calculateIndustryAnalysis() {
+      // 计算学历水平分数
+      let educationScore = 0;
+      this.resumeData.education.forEach(edu => {
+        if (edu.degree) {
+          switch (edu.degree.toLowerCase()) {
+            case '博士': educationScore = 100; break;
+            case '硕士': educationScore = 85; break;
+            case '本科': educationScore = 70; break;
+            case '大专': educationScore = 55; break;
+            default: educationScore = 40;
+          }
+        }
+      });
+
+      // 计算工作经验分数
+      const workExperience = this.resumeData.workExperience.length;
+      const workScore = Math.min(workExperience * 25, 100);
+
+      // 计算技能储备分数
+      const skills = this.resumeData.skills.length;
+      const skillScore = Math.min(skills * 20, 100);
+
+      // 计算专业相关度
+      let majorScore = 70; // 默认相关度
+
+      // 计算职位匹配度
+      let positionScore = 75; // 默认匹配度
+
+      // 更新分析数据
+      this.industryAnalysisData = [
+        { name: '学历水平', value: educationScore },
+        { name: '工作经验', value: workScore },
+        { name: '技能储备', value: skillScore },
+        { name: '专业相关度', value: majorScore },
+        { name: '职位匹配度', value: positionScore }
+      ];
+    },
+    calculateResumeScore() {
+      const score = {
+        total: 0,
+        details: {
+          basicInfo: 0,
+          education: 0,
+          workExperience: 0,
+          skills: 0
+        },
+        suggestions: []
+      };
+
+      // 基本信息评分 (25分)
+      const basicInfo = this.resumeData.basicInfo;
+      if (basicInfo.name) score.details.basicInfo += 5;
+      if (basicInfo.position) score.details.basicInfo += 5;
+      if (basicInfo.email) score.details.basicInfo += 5;
+      if (basicInfo.phone) score.details.basicInfo += 5;
+      if (basicInfo.summary && basicInfo.summary.length > 50) score.details.basicInfo += 5;
+      
+      if (score.details.basicInfo < 25) {
+        score.suggestions.push("完善基本信息，包括姓名、职位、联系方式和个人简介");
+      }
+
+      // 教育经历评分 (25分)
+      const education = this.resumeData.education;
+      if (education && education.length > 0) {
+        education.forEach(edu => {
+          if (edu.school) score.details.education += 5;
+          if (edu.degree) score.details.education += 5;
+          if (edu.major) score.details.education += 5;
+          if (edu.timeRange) score.details.education += 5;
+        });
+        score.details.education = Math.min(score.details.education, 25);
+      } else {
+        score.suggestions.push("添加教育经历信息");
+      }
+
+      // 工作经历评分 (25分)
+      const workExperience = this.resumeData.workExperience;
+      if (workExperience && workExperience.length > 0) {
+        workExperience.forEach(work => {
+          if (work.company) score.details.workExperience += 5;
+          if (work.position) score.details.workExperience += 5;
+          if (work.description && work.description.length > 50) score.details.workExperience += 5;
+          if (work.timeRange) score.details.workExperience += 5;
+        });
+        score.details.workExperience = Math.min(score.details.workExperience, 25);
+      } else {
+        score.suggestions.push("添加工作经历信息");
+      }
+
+      // 技能评分 (25分)
+      const skills = this.resumeData.skills;
+      if (skills && skills.length > 0) {
+        skills.forEach(skill => {
+          if (skill.name) score.details.skills += 5;
+          if (skill.level >= 3) score.details.skills += 5;
+        });
+        score.details.skills = Math.min(score.details.skills, 25);
+      } else {
+        score.suggestions.push("添加技能信息");
+      }
+
+      // 计算总分
+      score.total = Object.values(score.details).reduce((a, b) => a + b, 0);
+
+      // 根据职位类型添加技能建议
+      const position = basicInfo.position ? basicInfo.position.toLowerCase() : '';
+      if (position.includes('前端') || position.includes('frontend')) {
+        if (!skills.some(s => s.name.toLowerCase().includes('javascript'))) {
+          score.suggestions.push("建议添加JavaScript相关技能");
+        }
+        if (!skills.some(s => s.name.toLowerCase().includes('vue') || s.name.toLowerCase().includes('react'))) {
+          score.suggestions.push("建议添加Vue.js或React等前端框架技能");
+        }
+      } else if (position.includes('后端') || position.includes('backend')) {
+        if (!skills.some(s => s.name.toLowerCase().includes('java') || s.name.toLowerCase().includes('python'))) {
+          score.suggestions.push("建议添加Java或Python等后端开发技能");
+        }
+      }
+
+      this.resumeScore = score;
+      
+      // 计算行业竞争力分析
+      this.calculateIndustryAnalysis();
+      
+      // 更新职业发展路径
+      const major = this.resumeData.education[0]?.major || '未填写专业';
+      this.careerPathData = [
+        { name: '初级', value: 20 },
+        { name: '中级', value: 50 },
+        { name: '高级', value: 80 },
+        { name: '专家', value: 100 }
+      ];
+    },
     saveResumeData() {
       // 保存数据到本地存储
       const savedData = {
@@ -351,6 +675,10 @@ export default {
         selectedTemplate: this.selectedTemplate
       };
       localStorage.setItem("resumeData", JSON.stringify(savedData));
+      
+      // 更新评分
+      this.calculateResumeScore();
+      
       this.$message({
         message: "简历数据已保存",
         type: "success"
@@ -439,6 +767,17 @@ export default {
     closeInfoDialog() {
       this.dialogVisible = false;
       this.handleDialogClose();
+    },
+    // 获取评分颜色
+    getScoreColor(score) {
+      if (score >= 80) return '#67C23A';
+      if (score >= 60) return '#E6A23C';
+      return '#F56C6C';
+    },
+    getCurrentCareerLevel() {
+      // 这里应该实现一个逻辑来确定当前的发展阶段
+      // 例如，可以根据工作经验的长度来判断
+      return Math.min(this.resumeData.workExperience.length - 1, 3);
     }
   },
   created() {
@@ -467,6 +806,9 @@ export default {
     
     // 无论是否从本地存储加载，都显示简历
     this.showResume = true;
+
+    // 初始化评分
+    this.calculateResumeScore();
 
     // 控制开屏动画
     setTimeout(() => {
@@ -628,7 +970,7 @@ export default {
   position: relative;
   z-index: 1;
   flex: 1;
-  padding-top: 20px;
+  padding-top: 80px;
 }
 
 /* 导航栏样式 */
@@ -639,8 +981,12 @@ export default {
   justify-content: space-between;
   align-items: center;
   padding: 15px 30px;
-  position: relative;
-  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
 }
 
 .navbar-brand {
@@ -1162,7 +1508,8 @@ export default {
   .modern-navbar,
   .app-footer,
   .preview-header,
-  .no-print {
+  .no-print,
+  .score-card {
     display: none !important;
   }
   
@@ -1173,6 +1520,13 @@ export default {
     animation: none;
     border-radius: 0;
     max-width: 100%;
+    background-color: white !important;
+  }
+  
+  .resume-preview .resume-container {
+    padding: 0;
+    margin: 0;
+    background-color: white !important;
   }
   
   .el-button, 
@@ -1184,7 +1538,7 @@ export default {
   }
   
   .content-wrapper {
-    padding: 0;
+    padding: 0 !important;
     max-width: 100% !important;
     margin: 0 !important;
   }
@@ -1203,6 +1557,18 @@ export default {
     overflow: visible;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+    background-color: white !important;
+  }
+
+  /* 确保深色模式下打印时背景为白色 */
+  .dark-mode {
+    background-color: white !important;
+  }
+  
+  .dark-mode .resume-preview,
+  .dark-mode .resume-container {
+    background-color: white !important;
+    color: #333 !important;
   }
 }
 
@@ -1448,12 +1814,12 @@ export default {
 
 @media print {
   .dark-mode {
-    background-color: #fff;
-    color: #333;
+    background-color: white !important;
+    color: #333 !important;
   }
   
-  .dark-mode .resume-preview {
-    background-color: #fff;
+ .dark-mode .resume-preview {
+    background-color: white !important;
   }
 }
 
@@ -1705,5 +2071,457 @@ body:not(.el-popup-parent--hidden) {
   color: #fff;
   background-color: #3498db;
   border-color: #3498db;
+}
+
+/* 评分卡片样式 */
+.score-card {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-bottom: 30px;
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+.score-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.score-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #2c3e50;
+  margin: 0;
+  margin-right: 10px;
+}
+
+.score-header i {
+  color: #909399;
+  cursor: help;
+}
+
+.score-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.score-main {
+  display: flex;
+  gap: 30px;
+  align-items: flex-start;
+}
+
+.score-circle {
+  flex-shrink: 0;
+}
+
+.score-text {
+  text-align: center;
+}
+
+.score-number {
+  font-size: 24px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.score-label {
+  font-size: 14px;
+  color: #909399;
+  margin-left: 4px;
+}
+
+.score-details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.detail-label {
+  width: 80px;
+  color: #606266;
+  font-size: 14px;
+}
+
+.detail-score {
+  width: 45px;
+  text-align: right;
+  color: #606266;
+  font-size: 14px;
+}
+
+.score-suggestions {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.score-suggestions h4 {
+  font-size: 16px;
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.score-suggestions ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.score-suggestions li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #606266;
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.score-suggestions i {
+  color: #E6A23C;
+}
+
+/* 深色模式适配 */
+.dark-mode .score-card {
+  background: #2c2c2c;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode .score-header {
+  border-bottom-color: #3a3a3a;
+}
+
+.dark-mode .score-title {
+  color: #ecf0f1;
+}
+
+.dark-mode .score-header i {
+  color: #bdc3c7;
+}
+
+.dark-mode .score-number {
+  color: #ecf0f1;
+}
+
+.dark-mode .score-label {
+  color: #bdc3c7;
+}
+
+.dark-mode .detail-label,
+.dark-mode .detail-score {
+  color: #bdc3c7;
+}
+
+.dark-mode .score-suggestions {
+  border-top-color: #3a3a3a;
+}
+
+.dark-mode .score-suggestions h4 {
+  color: #ecf0f1;
+}
+
+.dark-mode .score-suggestions li {
+  color: #bdc3c7;
+}
+
+/* 响应式布局 */
+@media (max-width: 768px) {
+  .score-main {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .score-details {
+    width: 100%;
+  }
+
+  .detail-item {
+    flex-wrap: wrap;
+  }
+
+  .detail-label {
+    width: 100%;
+  }
+}
+
+/* 评分标准样式更新 */
+.score-criteria {
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+.score-criteria h4 {
+  font-size: 16px;
+  color: #2c3e50;
+  margin: 0 0 20px 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
+
+.criteria-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.criteria-section {
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 6px;
+  border: 1px solid rgba(238, 238, 238, 0.1);
+}
+
+.criteria-section h5 {
+  font-size: 14px;
+  color: #3498db;
+  margin: 0 0 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.criteria-section h5::before {
+  content: "";
+  width: 4px;
+  height: 14px;
+  background: #3498db;
+  border-radius: 2px;
+}
+
+.criteria-section ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.criteria-section li {
+  font-size: 13px;
+  color: #606266;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-left: 15px;
+  position: relative;
+}
+
+.criteria-section li:last-child {
+  margin-bottom: 0;
+}
+
+.criteria-section li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3498db;
+  opacity: 0.6;
+}
+
+/* 深色模式适配 */
+.dark-mode .score-criteria {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: #3a3a3a;
+}
+
+.dark-mode .score-criteria h4 {
+  color: #ecf0f1;
+  border-bottom-color: #3a3a3a;
+}
+
+.dark-mode .criteria-section {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .criteria-section li {
+  color: #bdc3c7;
+}
+
+/* 响应式布局调整 */
+@media (max-width: 768px) {
+  .criteria-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .criteria-section {
+    padding: 12px;
+  }
+  
+  .score-criteria {
+    padding: 15px;
+  }
+}
+
+/* 分析部分样式 */
+.analysis-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 20px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid #eee;
+}
+
+.industry-analysis,
+.career-path {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  padding: 20px;
+  min-height: 300px;
+}
+
+.analysis-content {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.analysis-item {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.analysis-label {
+  font-size: 14px;
+  color: #606266;
+}
+
+.career-path-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.career-steps {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.career-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #dcdfe6;
+  z-index: 0;
+}
+
+.career-step {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 1;
+}
+
+.step-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #dcdfe6;
+  border: 2px solid #fff;
+  transition: all 0.3s ease;
+}
+
+.step-dot.active {
+  background: #3498db;
+  box-shadow: 0 0 10px rgba(52, 152, 219, 0.3);
+}
+
+.step-label {
+  font-size: 14px;
+  color: #606266;
+}
+
+.step-value {
+  font-size: 12px;
+  color: #909399;
+}
+
+.current-position {
+  text-align: center;
+  color: #606266;
+  font-size: 14px;
+}
+
+.position-progress {
+  margin-top: 10px;
+}
+
+/* 深色模式适配 */
+.dark-mode .analysis-section {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: #3a3a3a;
+}
+
+.dark-mode .analysis-label,
+.dark-mode .step-label {
+  color: #ecf0f1;
+}
+
+.dark-mode .step-value {
+  color: #bdc3c7;
+}
+
+.dark-mode .career-line {
+  background: #3a3a3a;
+}
+
+.dark-mode .step-dot {
+  border-color: #2c2c2c;
+  background: #3a3a3a;
+}
+
+.dark-mode .current-position {
+  color: #ecf0f1;
+}
+
+/* 响应式布局 */
+@media (max-width: 1200px) {
+  .analysis-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .career-steps {
+    padding: 15px 0;
+  }
+  
+  .step-label {
+    font-size: 12px;
+  }
+  
+  .step-value {
+    font-size: 10px;
+  }
 }
 </style>

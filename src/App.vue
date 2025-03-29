@@ -174,7 +174,7 @@
         class="mt-4 job-sites-card no-print"
       >
         <div slot="header" class="clearfix">
-          <span class="font-weight-bold">现在动手，投放简历！</span>
+          <span class="font-weight-bold job-sites-title">现在动手，投放简历！</span>
           <el-tooltip content="前往主流招聘网站投递简历" placement="top">
             <i class="el-icon-question ml-2"></i>
           </el-tooltip>
@@ -3213,6 +3213,12 @@ body:not(.el-popup-parent--hidden) {
 .show-back-to-top {
   opacity: 1;
   pointer-events: auto;
+}
+
+/* 添加招聘网站卡片标题在黑夜模式下的样式 */
+.dark-mode .job-sites-title {
+  color: #409EFF;
+  font-weight: 600;
 }
 </style>
 

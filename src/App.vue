@@ -483,7 +483,7 @@ export default {
         },
         education: [
           {
-            school: "北京大学",
+            school: "XX大学",
             degree: "本科",
             major: "计算机科学与技术",
             timeRange: [new Date(2014, 8, 1), new Date(2018, 6, 1)]

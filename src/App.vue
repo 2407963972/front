@@ -179,7 +179,6 @@
                     <div class="step-label">{{ item.name }}</div>
                     <div class="step-value">{{ item.value }}%</div>
                   </div>
-                  <div class="career-line"></div>
                 </div>
                 <div class="current-position">
                   当前发展阶段：{{ careerPathData[getCurrentCareerLevel()].name }}
@@ -250,12 +249,12 @@
         </div>
       </div>
 
-      <el-dialog
+          <el-dialog
         v-if="dialogVisible"
         title="编辑个人信息"
-        :visible.sync="dialogVisible"
+            :visible.sync="dialogVisible"
         width="50%"
-        :before-close="handleClose"
+            :before-close="handleClose"
         :append-to-body="true"
         @open="handleDialogOpen"
         @closed="handleDialogClose"
@@ -353,10 +352,10 @@
             </el-tab-pane>
           </el-tabs>
         </el-form>
-        <span slot="footer" class="dialog-footer">
+            <span slot="footer" class="dialog-footer">
           <el-button @click="closeInfoDialog">取 消</el-button>
           <el-button type="primary" @click="saveResumeData">保 存</el-button>
-        </span>
+            </span>
       </el-dialog>
 
       <!-- 模板选择对话框，添加v-if确保未激活时完全不渲染 -->
@@ -391,25 +390,25 @@
                 >
                   <i class="el-icon-check"></i>
                 </el-button>
-              </div>
+            </div>
             </div>
             <div class="template-info">
               <h3>{{ template.name }}</h3>
               <p>{{ template.description }}</p>
             </div>
-          </div>
+            </div>
         </div>
         <span slot="footer" class="dialog-footer">
           <el-button type="primary" @click="applyTemplate">应用模板</el-button>
         </span>
-      </el-dialog>
-    </div>
+          </el-dialog>
+</div>
     
     <!-- 页脚 -->
     <footer class="app-footer">
       <div class="footer-content">
         <p>© 2023 简历自动生成系统 - 轻松创建专业简历</p>
-      </div>
+    </div>
     </footer>
   </div>
 </template>
@@ -683,7 +682,7 @@ export default {
         message: "简历数据已保存",
         type: "success"
       });
-      this.dialogVisible = false;
+          this.dialogVisible = false;
       this.handleDialogClose();
       this.showResume = true;
     },
@@ -693,7 +692,7 @@ export default {
         degree: "",
         major: "",
         timeRange: ""
-      });
+        });
     },
     removeEducation(index) {
       this.resumeData.education.splice(index, 1);
@@ -2421,16 +2420,6 @@ body:not(.el-popup-parent--hidden) {
   display: flex;
   justify-content: space-between;
   padding: 20px 0;
-}
-
-.career-line {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: #dcdfe6;
-  z-index: 0;
 }
 
 .career-step {

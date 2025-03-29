@@ -209,6 +209,8 @@
                 <h5>基本信息 (25分)</h5>
                 <ul>
                   <li>姓名 (5分)</li>
+                  <li>性别 (5分)</li>
+                  <li>年龄 (5分)</li>
                   <li>职位 (5分)</li>
                   <li>邮箱 (5分)</li>
                   <li>电话 (5分)</li>
@@ -264,6 +266,16 @@
             <el-tab-pane label="基本信息">
               <el-form-item label="姓名">
                 <el-input v-model="resumeData.basicInfo.name"></el-input>
+              </el-form-item>
+              <el-form-item label="性别">
+                <el-radio-group v-model="resumeData.basicInfo.gender">
+                  <el-radio label="男">男</el-radio>
+                  <el-radio label="女">女</el-radio>
+                  <el-radio label="其他">其他</el-radio>
+                </el-radio-group>
+              </el-form-item>
+              <el-form-item label="年龄">
+                <el-input-number v-model="resumeData.basicInfo.age" :min="16" :max="100"></el-input-number>
               </el-form-item>
               <el-form-item label="职位">
                 <el-input v-model="resumeData.basicInfo.position"></el-input>
@@ -462,6 +474,8 @@ export default {
       resumeData: {
         basicInfo: {
           name: "张三",
+          gender: "男",
+          age: 28,
           position: "前端开发工程师",
           email: "zhangsan@email.com",
           phone: "13800138000",
@@ -586,13 +600,15 @@ export default {
       // 基本信息评分 (25分)
       const basicInfo = this.resumeData.basicInfo;
       if (basicInfo.name) score.details.basicInfo += 5;
+      if (basicInfo.gender) score.details.basicInfo += 5;
+      if (basicInfo.age) score.details.basicInfo += 5;
       if (basicInfo.position) score.details.basicInfo += 5;
       if (basicInfo.email) score.details.basicInfo += 5;
       if (basicInfo.phone) score.details.basicInfo += 5;
       if (basicInfo.summary && basicInfo.summary.length > 50) score.details.basicInfo += 5;
       
       if (score.details.basicInfo < 25) {
-        score.suggestions.push("完善基本信息，包括姓名、职位、联系方式和个人简介");
+        score.suggestions.push("完善基本信息，包括姓名、性别、年龄、职位、联系方式和个人简介");
       }
 
       // 教育经历评分 (25分)

@@ -8,6 +8,12 @@
         <h3 class="resume-position">{{ resumeData.basicInfo.position }}</h3>
         
         <div class="resume-contact">
+          <p v-if="resumeData.basicInfo.gender || resumeData.basicInfo.age">
+            <i class="el-icon-user"></i> 
+            {{ resumeData.basicInfo.gender }}
+            <span v-if="resumeData.basicInfo.gender && resumeData.basicInfo.age"> · </span>
+            {{ resumeData.basicInfo.age }}岁
+          </p>
           <p v-if="resumeData.basicInfo.email">
             <i class="el-icon-message"></i> {{ resumeData.basicInfo.email }}
           </p>
@@ -84,6 +90,14 @@
           <h2>{{ resumeData.basicInfo.position }}</h2>
         </div>
         <div class="modern-contact">
+          <div v-if="resumeData.basicInfo.gender || resumeData.basicInfo.age" class="contact-item">
+            <i class="el-icon-user"></i>
+            <span>
+              {{ resumeData.basicInfo.gender }}
+              <span v-if="resumeData.basicInfo.gender && resumeData.basicInfo.age"> · </span>
+              {{ resumeData.basicInfo.age }}岁
+            </span>
+          </div>
           <div v-if="resumeData.basicInfo.email" class="contact-item">
             <i class="el-icon-message"></i>
             <span>{{ resumeData.basicInfo.email }}</span>
@@ -173,6 +187,14 @@
         </div>
         
         <div class="creative-contact">
+          <div v-if="resumeData.basicInfo.gender || resumeData.basicInfo.age" class="creative-contact-item">
+            <i class="el-icon-user"></i>
+            <span>
+              {{ resumeData.basicInfo.gender }}
+              <span v-if="resumeData.basicInfo.gender && resumeData.basicInfo.age"> · </span>
+              {{ resumeData.basicInfo.age }}岁
+            </span>
+          </div>
           <div v-if="resumeData.basicInfo.email" class="creative-contact-item">
             <i class="el-icon-message"></i>
             <span class="email-text">{{ resumeData.basicInfo.email }}</span>

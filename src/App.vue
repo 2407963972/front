@@ -83,6 +83,38 @@
         <ResumePrint :resumeData="resumeData" :template="selectedTemplate" />
       </div>
 
+      <!-- AI润色与扩写卡片 -->
+      <el-card v-if="showResume" class="mt-4 ai-enhance-card no-print">
+        <div slot="header" class="clearfix">
+          <span class="font-weight-bold">想试试AI润色并且扩写简历？</span>
+          <el-tooltip content="利用AI技术优化简历内容" placement="top">
+            <i class="el-icon-question ml-2"></i>
+          </el-tooltip>
+        </div>
+        <div class="p-3">
+          <div class="ai-enhance-content">
+            <div class="mb-3">
+              <p>智能简历润色与扩写助手可以帮助您：</p>
+              <ul>
+                <li>优化简历语言表达，使其更专业、更吸引人</li>
+                <li>根据职位需求扩展简历内容，突出相关技能和经验</li>
+                <li>改进简历结构，提高可读性和传达效率</li>
+                <li>智能分析并提供专业化建议，提升简历竞争力</li>
+              </ul>
+            </div>
+            <div class="text-center">
+              <el-button 
+                type="primary" 
+                icon="el-icon-edit"
+                @click="openAIEnhancer"
+                class="enhance-btn">
+                使用AI润色与扩写
+              </el-button>
+            </div>
+          </div>
+        </div>
+      </el-card>
+
       <!-- 简历评分卡片 -->
       <div v-if="showResume" class="score-card mt-4 no-print">
         <div class="score-header">
@@ -793,7 +825,10 @@ export default {
       // 这里应该实现一个逻辑来确定当前的发展阶段
       // 例如，可以根据工作经验的长度来判断
       return Math.min(this.resumeData.workExperience.length - 1, 3);
-    }
+    },
+    openAIEnhancer() {
+      window.open('https://2407963972.github.io/xinghuo-main/dist/index', '_blank');
+    },
   },
   created() {
     // 尝试从本地存储加载简历数据
@@ -2527,6 +2562,79 @@ body:not(.el-popup-parent--hidden) {
   
   .step-value {
     font-size: 10px;
+  }
+}
+
+/* AI润色与扩写卡片样式 */
+.ai-enhance-card {
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+.ai-enhance-content {
+  font-size: 14px;
+}
+
+.ai-enhance-content ul {
+  padding-left: 20px;
+  margin-bottom: 15px;
+}
+
+.ai-enhance-content li {
+  margin-bottom: 8px;
+  line-height: 1.5;
+  position: relative;
+}
+
+.ai-enhance-content li::before {
+  content: "";
+  position: absolute;
+  left: -15px;
+  top: 7px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3498db;
+  opacity: 0.6;
+}
+
+.enhance-btn {
+  transition: all 0.3s ease;
+  padding: 10px 20px;
+}
+
+.enhance-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* 暗黑模式适配 */
+.dark-mode .ai-enhance-card {
+  background-color: #2c2c2c;
+}
+
+.dark-mode .ai-enhance-content {
+  color: #dcdfe6;
+}
+
+.dark-mode .ai-enhance-content li::before {
+  background: #3498db;
+}
+
+/* 添加暗黑模式下卡片标题的彩色样式 */
+.dark-mode .ai-enhance-card .el-card__header .font-weight-bold {
+  background: linear-gradient(45deg, #3498db, #9b59b6);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 600;
+}
+
+/* 响应式调整 */
+@media (max-width: 768px) {
+  .ai-enhance-content {
+    font-size: 13px;
   }
 }
 </style>

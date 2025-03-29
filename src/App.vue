@@ -275,7 +275,7 @@
 
       <!-- 简历评分卡片 -->
       <!-- 简历评分卡片 -->
-      <div v-if="showResume" class="score-card mt-4 no-print">
+      <div v-if="showResume" id="score-card-section" class="score-card mt-4 no-print">
         <div class="score-header">
           <h3 class="score-title">简历评分</h3>
           <el-tooltip

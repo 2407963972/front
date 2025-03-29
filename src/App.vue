@@ -115,6 +115,64 @@
         </div>
       </el-card>
 
+    
+
+<!-- 招聘网站卡片 -->
+<el-card v-if="showResume" class="mt-4 job-sites-card no-print">
+  <div slot="header" class="clearfix">
+    <span class="font-weight-bold">现在动手，投放简历！</span>
+    <el-tooltip content="前往主流招聘网站投递简历" placement="top">
+      <i class="el-icon-question ml-2"></i>
+    </el-tooltip>
+  </div>
+  <div class="p-3">
+    <div class="job-sites-content">
+      <div class="mb-3">
+        <p>精选国内主流招聘网站，助您快速找到理想工作：</p>
+      </div>
+      <div class="job-sites-grid">
+        <el-tooltip content="国内老牌综合性招聘平台，覆盖全行业职位，提供简历优化、线上招聘会等服务，适合白领及专业人士。" placement="top">
+          <el-button type="primary" plain @click="openJobSite('https://www.zhaopin.com')" class="job-site-btn">
+            <i class="el-icon-position"></i> <span>智联招聘</span>
+          </el-button>
+        </el-tooltip>
+
+        
+        <el-tooltip content="职位分类清晰，搜索功能强大，支持职业规划指导和行业资讯，尤其适合中高端岗位求职者。" placement="top">
+          <el-button type="primary" plain @click="openJobSite('https://www.51job.com')" class="job-site-btn">
+            <i class="el-icon-position"></i> <span>前程无忧</span>
+          </el-button>
+        </el-tooltip>
+        
+        <el-tooltip content="以直接对话老板为特色，沟通效率高，覆盖互联网、科技等行业，适合年轻求职者和新兴领域人才。" placement="top">
+          <el-button type="primary" plain @click="openJobSite('https://www.zhipin.com')" class="job-site-btn">
+            <i class="el-icon-position"></i> <span>BOSS直聘</span>
+          </el-button>
+        </el-tooltip>
+        
+        <el-tooltip content="专注于中高端人才招聘，提供猎头服务和行业论坛，适合高管、技术专家等职业人群。" placement="top">
+          <el-button type="primary" plain @click="openJobSite('https://www.liepin.com')" class="job-site-btn">
+            <i class="el-icon-position"></i> <span>猎聘网</span>
+          </el-button>
+        </el-tooltip>
+        
+        <el-tooltip content="聚焦互联网行业，涵盖技术、产品、设计等岗位，社区功能丰富，适合互联网从业者。" placement="top">
+          <el-button type="primary" plain @click="openJobSite('https://www.lagou.com')" class="job-site-btn">
+            <i class="el-icon-position"></i> <span>拉勾网</span>
+          </el-button>
+        </el-tooltip>
+        
+        <el-tooltip content="专注蓝领招聘，覆盖建筑、物流、家政等领域，提供实时岗位更新和工资保障服务。" placement="top">
+          <el-button type="primary" plain @click="openJobSite('https://www.yupao.com')" class="job-site-btn">
+            <i class="el-icon-position"></i> <span>鱼泡网</span>
+          </el-button>
+        </el-tooltip>
+      </div>
+    </div>
+  </div>
+</el-card>
+
+<!-- 简历评分卡片 -->
       <!-- 简历评分卡片 -->
       <div v-if="showResume" class="score-card mt-4 no-print">
         <div class="score-header">
@@ -828,6 +886,9 @@ export default {
     },
     openAIEnhancer() {
       window.open('https://2407963972.github.io/xinghuo-main/dist/index', '_blank');
+    },
+    openJobSite(url) {
+      window.open(url, '_blank');
     },
   },
   created() {
@@ -2631,10 +2692,98 @@ body:not(.el-popup-parent--hidden) {
   font-weight: 600;
 }
 
+
 /* 响应式调整 */
 @media (max-width: 768px) {
   .ai-enhance-content {
     font-size: 13px;
   }
 }
+
+
+/* 招聘网站卡片样式 */
+.job-sites-card {
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  animation: slideUp 0.8s ease-out forwards;
+}
+
+.job-sites-content {
+  font-size: 14px;
+}
+
+.job-sites-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.job-site-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  transition: all 0.3s ease;
+}
+
+.job-site-btn i {
+  margin-right: 8px;
+}
+
+.job-site-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* 深色模式适配 */
+.dark-mode .job-sites-card {
+  background-color: #2c2c2c;
+}
+
+.dark-mode .job-sites-content {
+  color: #dcdfe6;
+}
+
+/* 响应式调整 */
+@media (max-width: 992px) {
+  .job-sites-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .job-sites-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.btn-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.btn-content i {
+  margin-right: 8px;
+  flex-shrink: 0;
+}
+
+.job-site-btn {
+  padding: 8px 12px;
+  width: 90%;
+  max-width: 150px;
+}
+
+.job-sites-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+  justify-items: center;
+  align-items: center;
+}
+
 </style>
+

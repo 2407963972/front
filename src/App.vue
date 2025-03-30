@@ -185,89 +185,77 @@
               <p>精选国内主流招聘网站，助您快速找到理想工作：</p>
             </div>
             <div class="job-sites-grid">
-              <el-tooltip
-                content="国内老牌综合性招聘平台，覆盖全行业职位，提供简历优化、线上招聘会等服务，适合白领及专业人士。"
-                placement="top"
-              >
-                <el-button
-                  type="primary"
-                  plain
-                  @click="openJobSite('https://www.zhaopin.com')"
-                  class="job-site-btn"
-                >
-                  <i class="el-icon-position"></i> <span>智联招聘</span>
-                </el-button>
-              </el-tooltip>
-
-              <el-tooltip
-                content="职位分类清晰，搜索功能强大，支持职业规划指导和行业资讯，尤其适合中高端岗位求职者。"
-                placement="top"
-              >
-                <el-button
-                  type="primary"
-                  plain
-                  @click="openJobSite('https://www.51job.com')"
-                  class="job-site-btn"
-                >
-                  <i class="el-icon-position"></i> <span>前程无忧</span>
-                </el-button>
-              </el-tooltip>
-
-              <el-tooltip
-                content="以直接对话老板为特色，沟通效率高，覆盖互联网、科技等行业，适合年轻求职者和新兴领域人才。"
-                placement="top"
-              >
-                <el-button
-                  type="primary"
-                  plain
-                  @click="openJobSite('https://www.zhipin.com')"
-                  class="job-site-btn"
-                >
-                  <i class="el-icon-position"></i> <span>BOSS直聘</span>
-                </el-button>
-              </el-tooltip>
-
-              <el-tooltip
-                content="专注于中高端人才招聘，提供猎头服务和行业论坛，适合高管、技术专家等职业人群。"
-                placement="top"
-              >
-                <el-button
-                  type="primary"
-                  plain
-                  @click="openJobSite('https://www.liepin.com')"
-                  class="job-site-btn"
-                >
-                  <i class="el-icon-position"></i> <span>猎聘网</span>
-                </el-button>
-              </el-tooltip>
-
-              <el-tooltip
-                content="聚焦互联网行业，涵盖技术、产品、设计等岗位，社区功能丰富，适合互联网从业者。"
-                placement="top"
-              >
-                <el-button
-                  type="primary"
-                  plain
-                  @click="openJobSite('https://www.lagou.com')"
-                  class="job-site-btn"
-                >
-                  <i class="el-icon-position"></i> <span>拉勾网</span>
-                </el-button>
-              </el-tooltip>
-
-              <el-tooltip
-                content="专注蓝领招聘，覆盖建筑、物流、家政等领域，提供实时岗位更新和工资保障服务。"
-                placement="top"
-              >
-                <el-button
-                  type="primary"
-                  plain
-                  @click="openJobSite('https://www.yupao.com')"
-                  class="job-site-btn"
-                >
-                  <i class="el-icon-position"></i> <span>鱼泡网</span>
-                </el-button>
-              </el-tooltip>
+              <div class="job-site-item">
+                <div class="job-site-card" @click="openJobSite('https://www.zhaopin.com')">
+                  <div class="job-site-icon">
+                    <i class="el-icon-position"></i>
+                  </div>
+                  <div class="job-site-name">智联招聘</div>
+                </div>
+                <div class="job-site-desc">
+                  国内老牌综合性招聘平台，覆盖全行业职位，提供简历优化、线上招聘会等服务，适合白领及专业人士。
+                </div>
+              </div>
+              
+              <div class="job-site-item">
+                <div class="job-site-card" @click="openJobSite('https://www.51job.com')">
+                  <div class="job-site-icon">
+                    <i class="el-icon-position"></i>
+                  </div>
+                  <div class="job-site-name">前程无忧</div>
+                </div>
+                <div class="job-site-desc">
+                  职位分类清晰，搜索功能强大，支持职业规划指导和行业资讯，尤其适合中高端岗位求职者。
+                </div>
+              </div>
+              
+              <div class="job-site-item">
+                <div class="job-site-card" @click="openJobSite('https://www.zhipin.com')">
+                  <div class="job-site-icon">
+                    <i class="el-icon-position"></i>
+                  </div>
+                  <div class="job-site-name">BOSS直聘</div>
+                </div>
+                <div class="job-site-desc">
+                  以直接对话老板为特色，沟通效率高，覆盖互联网、科技等行业，适合年轻求职者和新兴领域人才。
+                </div>
+              </div>
+              
+              <div class="job-site-item">
+                <div class="job-site-card" @click="openJobSite('https://www.liepin.com')">
+                  <div class="job-site-icon">
+                    <i class="el-icon-position"></i>
+                  </div>
+                  <div class="job-site-name">猎聘网</div>
+                </div>
+                <div class="job-site-desc">
+                  专注于中高端人才招聘，提供猎头服务和行业论坛，适合高管、技术专家等职业人群。
+                </div>
+              </div>
+              
+              <div class="job-site-item">
+                <div class="job-site-card" @click="openJobSite('https://www.lagou.com')">
+                  <div class="job-site-icon">
+                    <i class="el-icon-position"></i>
+                  </div>
+                  <div class="job-site-name">拉勾网</div>
+                </div>
+                <div class="job-site-desc">
+                  聚焦互联网行业，涵盖技术、产品、设计等岗位，社区功能丰富，适合互联网从业者。
+                </div>
+              </div>
+              
+              <div class="job-site-item">
+                <div class="job-site-card" @click="openJobSite('https://www.yupao.com')">
+                  <div class="job-site-icon">
+                    <i class="el-icon-position"></i>
+                  </div>
+                  <div class="job-site-name">鱼泡网</div>
+                </div>
+                <div class="job-site-desc">
+                  专注蓝领招聘，覆盖建筑、物流、家政等领域，提供实时岗位更新和工资保障服务。
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -3030,25 +3018,54 @@ body:not(.el-popup-parent--hidden) {
 .job-sites-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 20px;
   margin-top: 20px;
 }
 
-.job-site-btn {
+.job-site-item {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
+  flex-direction: column;
   transition: all 0.3s ease;
 }
 
-.job-site-btn i {
-  margin-right: 8px;
+.job-site-card {
+  background-color: #f5f7fa;
+  border-radius: 8px;
+  padding: 20px 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 10px;
 }
 
-.job-site-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+.job-site-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  background-color: #eef5ff;
+}
+
+.job-site-icon {
+  font-size: 28px;
+  color: #409EFF;
+  margin-bottom: 12px;
+}
+
+.job-site-name {
+  font-weight: 600;
+  font-size: 16px;
+  color: #333;
+}
+
+.job-site-desc {
+  font-size: 12px;
+  color: #606266;
+  line-height: 1.5;
+  text-align: center;
+  padding: 0 5px;
 }
 
 /* 深色模式适配 */
@@ -3058,6 +3075,24 @@ body:not(.el-popup-parent--hidden) {
 
 .dark-mode .job-sites-content {
   color: #dcdfe6;
+}
+
+.dark-mode .job-site-card {
+  background-color: #363636;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.dark-mode .job-site-card:hover {
+  background-color: #404040;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.dark-mode .job-site-name {
+  color: #e6e6e6;
+}
+
+.dark-mode .job-site-desc {
+  color: #b3b3b3;
 }
 
 /* 响应式调整 */
